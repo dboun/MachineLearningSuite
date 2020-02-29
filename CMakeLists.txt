@@ -10,7 +10,7 @@ project( ${PROJECT_NAME} VERSION ${PROJECT_VERSION} )
 add_subdirectory( MLSuite )
 
 # Define the executable (Executable name + files)
-add_executable ( ${PROJECT_NAME} main.cxx )
+add_executable( ${PROJECT_NAME} main.cxx )
 
 # Define the dependencies of the executable
 # (Executable name + libraries)
