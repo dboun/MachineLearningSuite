@@ -1,1 +1,5 @@
 # MachineLearningSuite
+
+- Preprocessing
+- ML
+- Statistics
