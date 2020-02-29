@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.1)
 
 set( PROJECT_NAME CmdParser )
 
@@ -6,7 +6,7 @@ set( PROJECT_NAME CmdParser )
 project( ${PROJECT_NAME} )
 
 # Define the library (library name + files)
-add_library( ${PROJECT_NAME} 
+add_library( ${PROJECT_NAME} SHARED
 	cbicaCmdParser.cpp
 	cbicaCmdParser.h
 )
@@ -14,7 +14,7 @@ add_library( ${PROJECT_NAME}
 # Where to look for headers
 # In this case it is set at the root of
 # the project, because that's where the header is
-target_include_directories( ${PROJECT_NAME}
+target_include_directories( ${PROJECT_NAME} PUBLIC
 	${PROJECT_SOURCE_DIR}
 )
 
@@ -26,4 +26,4 @@ target_include_directories( ${PROJECT_NAME}
 # This is generally weird, I just didn't
 # want it to build yaml twice, and I wanted
 # yaml-cpp to be a dependency inside the MLSuite library.
-target_link_libraries( ${PROJECT_NAME} YAML-CPP )
+target_link_libraries( ${PROJECT_NAME} yaml-cpp )
