@@ -3,17 +3,17 @@
 #include <opencv2/ml.hpp>
 #include <opencv2/core/types.hpp>
 
-mlsuite::ClassifierSVM()
+mlsuite::ClassifierSVM::ClassifierSVM()
 {
 
 }
 
-mlsuite::~ClassifierSVM()
+mlsuite::ClassifierSVM::~ClassifierSVM()
 {
 
 }
 
-void mlsuite::Train(
+void mlsuite::ClassifierSVM::Train(
     cv::Mat& samples, 
     cv::Mat& responses, 
     YAML::Node configuration, 
@@ -74,7 +74,7 @@ void mlsuite::Train(
         // General options
         clf->setKernel( cv::ml::SVM::KernelTypes::LINEAR );
         clf->setType( cv::ml::SVM::C_SVC ); // we don't really care about the other types
-        clf->setTermCriteria( cv::TermCriteria::Type::EPS );
+        clf->setTermCriteria( cv::TermCriteria(cv::TermCriteria::MAX_ITER, 100, 1e-6) );
         //clf->setClassWeights(mWeightsMat); // big story, look into this. should be optional.
         
         // Classic options (if no cross-validation etc)

@@ -1,23 +1,23 @@
 #include "MLSuiteClassifierBase.h"
 
-mlsuite::MLSuiteClassifierBase::MLSuiteClassifierBase()
+mlsuite::ClassifierBase::ClassifierBase()
 {
-    std::cerr << "MLSuiteClassifierBase methods are not "
+    std::cerr << "ClassifierBase methods are not "
               << "supposed to be invoked directly.\n";
 }
 
-mlsuite::MLSuiteClassifierBase::~MLSuiteClassifierBase()
+mlsuite::ClassifierBase::~ClassifierBase()
 {
-    std::cerr << "MLSuiteClassifierBase methods are not "
+    std::cerr << "ClassifierBase methods are not "
               << "supposed to be invoked directly.\n";
 }
 
-void mlsuite::Train(
+void mlsuite::ClassifierBase::Train(
     cv::Mat& samples, 
     cv::Mat& responses, 
     YAML::Node configuration, 
     std::string outputModelPath)
 {
-    std::cerr << "MLSuiteClassifierBase methods are not "
+    std::cerr << "ClassifierBase methods are not "
               << "supposed to be invoked directly.\n";
 }

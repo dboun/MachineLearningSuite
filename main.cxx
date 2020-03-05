@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
     // ---- Optional parameters ----
 
-    parser.addRequiredParameter("ir", "inputresponses", cbica::Parameter::STRING, 
+    parser.addOptionalParameter("ir", "inputresponses", cbica::Parameter::STRING, 
         "text", "Path to the input responses matrix"
     );
 
@@ -49,29 +49,29 @@ int main(int argc, char *argv[])
     std::string modelPath;
     std::string configPath;
 
-    if ((argc == 1) || (parser.compareParameter("u", tempPosition))) {
+    if ((argc == 1) || (parser.compareParameter("u", parserPos))) {
 		parser.echoUsage();
 		return EXIT_SUCCESS;
 	}
 
-	if (parser.compareParameter("m", tempPosition)) {
-		mode = argv[tempPosition + 1];
+	if (parser.compareParameter("m", parserPos)) {
+		mode = argv[parserPos + 1];
 	}
     
-	if (parser.compareParameter("is", tempPosition)) {
-		inputSamplesPath = argv[tempPosition + 1];
+	if (parser.compareParameter("is", parserPos)) {
+		inputSamplesPath = argv[parserPos + 1];
 	}
 
-	if (parser.compareParameter("ir", tempPosition)) {
-		inputResponsesPath = argv[tempPosition + 1];
+	if (parser.compareParameter("ir", parserPos)) {
+		inputResponsesPath = argv[parserPos + 1];
 	}
 
-	if (parser.compareParameter("md", tempPosition)) {
-		modelPath = argv[tempPosition + 1];
+	if (parser.compareParameter("md", parserPos)) {
+		modelPath = argv[parserPos + 1];
 	}
 
-	if (parser.compareParameter("c", tempPosition)) {
-		configPath = argv[tempPosition + 1];
+	if (parser.compareParameter("c", parserPos)) {
+		configPath = argv[parserPos + 1];
 	}
 
     // ---- Parameters that are actually required depending on the mode ----
@@ -79,6 +79,12 @@ int main(int argc, char *argv[])
     if (mode == "train" && configPath == "")
     {
         std::cerr << "Please provide the configuration file.\n";
+        return EXIT_FAILURE;
+    }
+
+    if (mode == "train" && inputResponsesPath == "")
+    {
+        std::cerr << "Please provide a responses file.\n";
         return EXIT_FAILURE;
     }
 
@@ -91,6 +97,9 @@ int main(int argc, char *argv[])
     if (mode == "train")
     {
         cv::Mat responses = readCsv(inputResponsesPath);
+        responses.convertTo(responses, CV_32S); // make responses integer
+                                                // in the future, you might want to
+                                                // support probabilities (regression)
         YAML::Node config = YAML::LoadFile(configPath);
 
         mlsuite::Classification classification; 
@@ -99,7 +108,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            classification->Train(samples, responses, config, modelPath);
+            classification.Train(samples, responses, config, modelPath);
         }
         catch(const std::exception& e)
         {
@@ -114,6 +123,7 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
     
+    std::cout << "Finished.\n";
     return EXIT_SUCCESS;
 }
 
@@ -122,11 +132,12 @@ cv::Mat readCsv(const std::string& path)
     // This is definitely the wrong way to do it,
     // or at least it is very inelegant.
     // Please find the right one.
+    // I think this is the correct one
+    // https://docs.opencv.org/master/dc/d32/classcv_1_1ml_1_1TrainData.html#ab3264a32194126ff8d6821e76018cde3
 
-    CvMLData mlData;
-    mlData.read_csv(path);
-    const CvMat* tmp = mlData.get_values();
-    cv::Mat img(tmp, true);
+    // -2 and 0 in the last 2 args means that everything will be read as train data and no response data.
+    // Since we are reading them separately this is fine, we want to load the whole csv each time.
+    cv::Ptr<cv::ml::TrainData> tdata = cv::ml::TrainData::loadFromCSV(path,0,-2,0);
 
-    return img;
+    return tdata->getTrainSamples(); // not necessarily the train samples for us, we just 'em all
 }

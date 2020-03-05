@@ -53,8 +53,12 @@
         {
             "label": "RUN [Debug] train",
             "type": "shell",
-            "command": "mkdir -p ${workspaceRoot}/../output/train_model && printf \"\\033c\" && Debug/MachineLearningSuite",
-            "args": ["-m", "train", "-is", "${workspaceRoot}/data/features2.csv", "-md", "${workspaceRoot}/../output/train_model", "-c", "${workspaceRoot}/data/train_svm_lin.yml"],
+            "command": "Debug/MachineLearningSuite",
+            "args": ["-m", "train", 
+                     "-is", "../MachineLearningSuite-src/data/features2.csv", 
+                     "-ir", "../MachineLearningSuite-src/data/responses2.csv", 
+                     "-md", ".", // Change this 
+                     "-c", "../MachineLearningSuite-src/data/train_svm_lin.yml"],
             "options": {
                 "cwd": "${workspaceRoot}/../MachineLearningSuite-build"
             },

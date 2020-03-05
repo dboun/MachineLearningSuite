@@ -11,6 +11,23 @@ include(CheckCXXCompilerFlag)
 ###
 project(YAML_CPP VERSION 0.6.3)
 
+### DIMITRIS EDITS
+### This fixes not being able to link with shared library
+###
+# with -fPIC
+IF(UNIX AND NOT WIN32)
+  FIND_PROGRAM(CMAKE_UNAME uname /bin /usr/bin /usr/local/bin )
+  IF(CMAKE_UNAME)
+    EXEC_PROGRAM(uname ARGS -m OUTPUT_VARIABLE CMAKE_SYSTEM_PROCESSOR)
+    SET(CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR} CACHE INTERNAL
+"processor type (i386 and x86_64)")
+    IF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+      ADD_DEFINITIONS(-fPIC)
+    ENDIF(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+  ENDIF(CMAKE_UNAME)
+ENDIF(UNIX AND NOT WIN32)
+### EO DIMITRIS EDITS
+
 ###
 ### Project options
 ###

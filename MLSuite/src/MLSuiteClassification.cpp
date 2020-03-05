@@ -6,17 +6,17 @@
 #include <stdexcept>
 #include <memory>
 
-mlsuite::Classification()
+mlsuite::Classification::Classification()
 {
     // constructor
 }
 
-mlsuite::~Classification()
+mlsuite::Classification::~Classification()
 {
     // destructor
 }
 
-void mlsuite::Train(
+void mlsuite::Classification::Train(
     cv::Mat& samples, 
     cv::Mat& responses, 
     YAML::Node configuration, 
@@ -40,13 +40,13 @@ void mlsuite::Train(
     // Don't care too much about shared_ptr, it is just a smart pointer
     // that you don't need to delete. It gets automatically deleted
     // when all the blocks/instances that it gets used go out-of-scope/get deleted.
-    std::shared_ptr<MLSuiteClassifierBase> clf;
+    std::shared_ptr<mlsuite::ClassifierBase> clf;
 
     // Initialize clf with the correct classifier
     if (modelType == "svm")
     {
-        clf = std::make_shared<MLSuiteClassifierBase>(
-            new MLSuiteClassifierSVM()
+        clf = std::make_shared<mlsuite::ClassifierBase>(
+            mlsuite::ClassifierSVM()
         );
     }
     // TODO: else if ... // more classifiers like random forrest etc
@@ -59,7 +59,7 @@ void mlsuite::Train(
     clf->Train(samples, responses, configuration, outputModelPath);
 }
 
-cv::Mat mlsuite::Inference(
+cv::Mat mlsuite::Classification::Inference(
     cv::Mat& samples,
     std::string modelPath)
 {

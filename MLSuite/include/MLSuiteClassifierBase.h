@@ -1,5 +1,5 @@
-#ifndef MLSuiteClassifierBase_h
-#define MLSuiteClassifierBase_h
+#ifndef ClassifierBase_h
+#define ClassifierBase_h
 
 #include <opencv2/opencv.hpp>
 #include <yaml-cpp/yaml.h>
@@ -8,25 +8,25 @@
 
 namespace mlsuite
 {
-/** \class MLSuiteClassifierBase
+/** \class ClassifierBase
  * \brief Base class to provide a unified way to run
  *  different ML classifiers. 
  * 
  * Every ML classifier is supposed to inherit from this.
  * Methods in here are intenionally not pure virtual 
- * (i.e. MLSuiteClassifierBase() = 0;) to avoid making
+ * (i.e. ClassifierBase() = 0;) to avoid making
  * the class abstract. If the class is not abstract
  * we can have variables with that class as the type. 
  * That way we can do something like:
- * MLSuiteClassifierBase* clf = new MLSuiteClassifierSVM();
+ * ClassifierBase* clf = new MLSuiteClassifierSVM();
  * clf->Train(...); // This will call the SVM training.
  * If this doesn't make sense, it might make sense later!
  */
-class MLSuiteClassifierBase
+class ClassifierBase
 {
 public:
-    MLSuiteClassifierBase();
-    ~MLSuiteClassifierBase();
+    ClassifierBase();
+    ~ClassifierBase();
 
     /** \brief Train a model defined by the configuration
      * 
@@ -53,4 +53,4 @@ public:
 };
 }
 
-#endif // ! MLSuiteClassifierBase_h
+#endif // ! ClassifierBase_h
