@@ -1,0 +1,64 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Setup OpenCV (run once)",
+            "type": "shell",
+            "command": "chmod +x ${workspaceRoot}/.vscode/setupOpenCV.sh && ${workspaceRoot}/.vscode/setupOpenCV.sh",
+            "args": [],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMAKE [Debug]",
+            "type": "shell",
+            "command": "chmod +x ${workspaceRoot}/.vscode/cmakeDebug.sh && ${workspaceRoot}/.vscode/cmakeDebug.sh",
+            "args": [],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMAKE [Release]",
+            "type": "shell",
+            "command": "chmod +x ${workspaceRoot}/.vscode/cmakeRelease.sh && ${workspaceRoot}/.vscode/cmakeRelease.sh",
+            "args": [],
+            "problemMatcher": []
+        },
+        {
+            "label": "BUILD [Debug]",
+            "type": "shell",
+            "command": "printf \"\\033c\" && make -j6",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceRoot}/../MachineLearningSuite-build/Debug"
+            },
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "BUILD [Release]",
+            "type": "shell",
+            "command": "printf \"\\033c\" && make -j6",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceRoot}/../MachineLearningSuite-build/Release"
+            },
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "RUN [Debug] train",
+            "type": "shell",
+            "command": "mkdir -p ${workspaceRoot}/../output/train_model && printf \"\\033c\" && Debug/MachineLearningSuite",
+            "args": ["-m", "train", "-is", "${workspaceRoot}/data/features2.csv", "-md", "${workspaceRoot}/../output/train_model", "-c", "${workspaceRoot}/data/train_svm_lin.yml"],
+            "options": {
+                "cwd": "${workspaceRoot}/../MachineLearningSuite-build"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

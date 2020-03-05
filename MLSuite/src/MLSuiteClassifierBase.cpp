@@ -1,12 +1,12 @@
 #include "MLSuiteClassifierBase.h"
 
-mlsuite::MLSuiteClassifierBase()
+mlsuite::MLSuiteClassifierBase::MLSuiteClassifierBase()
 {
     std::cerr << "MLSuiteClassifierBase methods are not "
               << "supposed to be invoked directly.\n";
 }
 
-mlsuite::~MLSuiteClassifierBase()
+mlsuite::MLSuiteClassifierBase::~MLSuiteClassifierBase()
 {
     std::cerr << "MLSuiteClassifierBase methods are not "
               << "supposed to be invoked directly.\n";
